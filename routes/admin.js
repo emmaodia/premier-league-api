@@ -52,4 +52,34 @@ router.post('/signup', async(req, res) => {
    
 })
 
+router.post('/login', async(req, res) => {
+    const {email, password} = req.body
+
+    const admin = await Admin.find({email});
+    if (admin.length < 1) {
+        return res.status(409).json({
+          message: "Email does not exists!"
+        });
+      }else{
+
+    bcrypt.compare(password, admin[0].password, err => {
+        //if (err){
+        //  console.log(err)
+        //  return res.status(401).json({
+        //    message: 'Auth Failed'
+        //  });
+        //}
+        if (admin.length < 1) {
+            return res.status(409).json({
+              message: "Email does not exists!"
+            });
+          }
+
+          console.log(admin)
+          res.status(200).json(admin);
+        })
+    }
+
+})
+
 module.exports = router;
