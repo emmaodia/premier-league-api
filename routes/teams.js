@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const Team = require('../models/teams');
 
+router.get('/:team', async(req, res) => {
+    const team = await Team.findById(req.params.team);
+
+    res.status(200).json({
+                            name: team.name,
+                            city: team.city,
+                            coach: team.coach,
+    
+                        })
+
+    return console.log(team);
+})
+
 router.get('/', async(req, res) => { 
 
     const team = await Team.find();
