@@ -42,4 +42,17 @@ router.post('/create', async(req, res) => {
     res.status(200).json(response);
 });
 
+router.patch('/:team', async(req, res) => {
+    const team = await Team.findOneAndUpdate({ _id: req.params.team }, req.body);
+
+    res.status(200).json({
+        name: team.name,
+        city: team.city,
+        coach: team.coach,
+
+    })
+
+    return console.log(team);
+})
+
 module.exports = router;
