@@ -5,6 +5,12 @@ const Team = require('../models/teams');
 router.get('/:team', async(req, res) => {
     const team = await Team.findById(req.params.team);
 
+    if(!team) {
+        return res.status(404).json({
+          message : "Team not found!"
+        })
+      }
+
     res.status(200).json({
                             name: team.name,
                             city: team.city,
