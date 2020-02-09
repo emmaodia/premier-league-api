@@ -3,27 +3,35 @@ const router = express.Router();
 const Team = require('../models/teams');
 
 router.get('/:team', async(req, res) => {
-    const team = await Team.findById(req.params.team);
 
-    if(!team) {
-        return res.status(404).json({
-          message : "Team not found!"
-        })
-      }
+    try {
+        const team = await Team.findById(req.params.team);
 
-    res.status(200).json({
-                            name: team.name,
-                            city: team.city,
-                            coach: team.coach,
+        if(!team) {
+            return res.status(404).json({
+              message : "Team not found!"
+            })
+          }
     
-                        })
-
-    return console.log(team);
+        res.status(200).json({
+                                name: team.name,
+                                city: team.city,
+                                coach: team.coach,
+        
+                            })
+    
+        return console.log(team);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+   
 })
 
 router.get('/', async(req, res) => { 
 
-    const team = await Team.find();
+    try {
+        const team = await Team.find();
 
     const response = await team.map(team => {
         return {
@@ -35,21 +43,33 @@ router.get('/', async(req, res) => {
     })
     res.status(200).json(response)
     console.log(response)
-
-
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
 });
 
 router.post('/create', async(req, res) => {
-    const { name, city, coach } = req.body;
+
+    try {
+        const { name, city, coach } = req.body;
     const team = new Team({ name, city, coach });
 
     const response = await team.save();
 
     res.status(200).json(response);
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+    
 });
 
 router.patch('/:team', async(req, res) => {
-    const team = await Team.findOneAndUpdate({ _id: req.params.team }, req.body);
+
+    try {
+        const team = await Team.findOneAndUpdate({ _id: req.params.team }, req.body);
 
     res.status(200).json({
         name: team.name,
@@ -59,14 +79,25 @@ router.patch('/:team', async(req, res) => {
     })
 
     return console.log(team);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+    
 })
 
 router.delete('/:team', async(req, res) => {
-    const id = req.params.team;
+    try {
+        const id = req.params.team;
 
     const team = await Team.remove({ _id : id })
     
     res.status(200).json({ msg: "Team has been deleted!" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+    
 })
 
 module.exports = router;
