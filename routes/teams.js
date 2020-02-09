@@ -55,4 +55,12 @@ router.patch('/:team', async(req, res) => {
     return console.log(team);
 })
 
+router.delete('/:team', async(req, res) => {
+    const id = req.params.team;
+
+    const team = await Team.remove({ _id : id })
+    
+    res.status(200).json({ msg: "Team has been deleted!" })
+})
+
 module.exports = router;
