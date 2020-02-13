@@ -2,6 +2,25 @@ const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
 
+router.get('/:fixtures/:slug', async(req, res) => {
+    const fixtures = await Fixture.findById(req.params.fixtures);
+
+        if(!fixtures) {
+            return res.status(404).json({
+              message : "Fixture not found!"
+            })
+          }
+    
+        res.status(200).json({
+                                home: fixtures.home,
+                                away: fixtures.away,
+                                score: fixtures.score,
+                                play: fixtures.play,
+                            })
+    
+        return console.log(fixtures);
+})
+
 router.get('/:fixtures', async(req, res) => {
 
     try {
@@ -39,10 +58,17 @@ router.get('/', async(req, res) => {
             home: fixtures.home,
             away: fixtures.away,
             score: fixtures.score,
-            play: fixtures.play
+            play: fixtures.play,
+            slug: fixtures.slug,
+            request: {
+                type: "GET",
+                url: `http://localhost:3000/api/v1/fixtures/${fixtures._id}`,
+                slugUrl: `http://localhost:3000/api/v1/fixtures/${fixtures._id}/${fixtures.slug}`,
+              }
         }
     })
     res.status(200).json(response);
+    console.log(response)
     console.log(response)
     } catch (error) {
         console.log(error)
