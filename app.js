@@ -8,5 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => res.json({msg: "Welcome, Nerd!"}))
 
+const fixturesRouter = require("./routes/fixtures");
+
+app.use('/api/v1/fixtures', fixturesRouter);
 
 module.exports = app;
