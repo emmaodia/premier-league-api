@@ -41,7 +41,7 @@ router.get('/', async(req, res) => {
             coach: team.coach
         }
     })
-    res.status(200).json(response)
+    res.status(200).json(response);
     console.log(response)
     } catch (error) {
         console.log(error)
