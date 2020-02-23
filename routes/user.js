@@ -21,6 +21,30 @@ router.get('/', async(req, res) => {
    
 })
 
+router.get('/:user', async(req, res) => {
+
+  try {
+      const user = await User.findById(req.params.fixtures);
+
+      if(!user) {
+          return res.status(404).json({
+            message : "User not found!"
+          })
+        }
+  
+      res.status(200).json({
+                            _id: user._id,
+                            email: user.email
+                          })
+  
+      return console.log(user);
+  } catch (error) {
+      console.log(error)
+      res.status(500).json(error);
+  }
+ 
+})
+
 router.post('/signup', async(req, res) => {
     try {
         const {email, password} = req.body;
