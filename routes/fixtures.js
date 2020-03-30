@@ -2,6 +2,26 @@ const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
 
+router.get('/search', async(req, res) => {
+//{ res.json({msg: "o"})
+    try {
+        const { play: qPlay } = req.query;
+        const fixtures = await Fixture.find()
+        console.log(req.query);
+        let response = [];
+
+        if (qPlay && (qPlay == 'true' || qPlay == 'false')) {
+            response = fixtures.filter(({ play }) => String(play) == qPlay);
+            return res.status(200).json(response);
+        }
+
+        res.status(200).json(response);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+});
+
 router.get('/:fixtures/:slug', async(req, res) => {
     const fixtures = await Fixture.findById(req.params.fixtures);
 
