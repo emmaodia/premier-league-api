@@ -2,6 +2,26 @@ const express = require("express");
 const router = express.Router();
 const Team = require('../models/teams');
 
+router.get('/search', async(req, res) => {
+    try {
+        const teams = await Team.find();
+        let response = [];
+
+        if(typeof req.query.name != 'undefined' ){
+            response = teams.filter( team => {
+                if(team.name){
+                    return team;
+                }
+            });
+        }
+        console.log(response)
+        res.status(200).json(response)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+})
+
 router.get('/:team', async(req, res) => {
 
     try {
