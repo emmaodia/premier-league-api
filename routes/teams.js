@@ -1,16 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const Team = require('../models/teams');
+const _ = require('lodash');
 
 router.get('/search', async(req, res) => {
     try {
         const teams = await Team.find();
         let response = [];
+        console.log(req.query)
 
         if(typeof req.query.name != 'undefined' ){
             response = teams.filter( team => {
-                if(team.name){
-                    return team;
+                if(team.name === req.query.name){
+                    response.push(team);
                 }
             });
         }
