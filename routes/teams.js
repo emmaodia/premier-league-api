@@ -6,13 +6,14 @@ const _ = require('lodash');
 router.get('/search', async(req, res) => {
     try {
         const teams = await Team.find();
-        let response = [];
         console.log(req.query)
+
+        let response = [];
 
         if(typeof req.query.name != 'undefined' ){
             response = teams.filter( team => {
-                if(team.name === req.query.name){
-                    response.push(team);
+                if(team.name.toLowerCase() === req.query.name){
+                    return response;
                 }
             });
         }
