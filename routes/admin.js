@@ -75,27 +75,16 @@ router.post('/signup', (req, res, next) => {
     // } catch (error) {
     //     console.log(error)
     // }
-    Admin.findOne({ email: req.body.email }).then(
-      (admin) => {
-        if (!admin) {
-          return res.status(401).json({
-            error: new Error('User not found!')
-          });
-        }
-        bcrypt.compare(req.body.password, admin.password).then(
-          (valid) => {
-            if (!valid) {
-              return res.status(401).json({
-                error: new Error('Incorrect password!')
-              });
-            }
-            const token = jwt.sign(
-              { userId: admin._id },
-              'RANDOM_TOKEN_SECRET',
-              { expiresIn: '24h' });
-            res.status(200).json({
-              userId: admin._id,
-              token: token
+    bcrypt.hash(req.body.password, 10).then(
+      (hash) => {
+        const user = new User({
+          email: req.body.email,
+          password: hash
+        });
+        user.save().then(
+          () => {
+            res.status(201).json({
+              message: 'User added successfully!'
             });
           }
         ).catch(
@@ -105,12 +94,6 @@ router.post('/signup', (req, res, next) => {
             });
           }
         );
-      }
-    ).catch(
-      (error) => {
-        res.status(500).json({
-          error: error
-        });
       }
     );
 })
