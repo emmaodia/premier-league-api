@@ -17,7 +17,6 @@
   "author": "Emmanuel Oaikhenan",
   "license": "Apache-2.0",
   "dependencies": {
-    "bcrypt": "^3.0.8",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
