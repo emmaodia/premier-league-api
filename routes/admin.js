@@ -3,6 +3,7 @@ const router = express.Router();
 const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
 const Auth = require('../middleware/auth')
+const jwt = require('jsonwebtoken');
 
 router.get('/', Auth.isAuthorized, async(req, res) => {
     try {
@@ -78,33 +79,66 @@ router.post('/signup', async(req, res) => {
 })
 
 router.post('/login', async(req, res) => {
-    const {email, password} = req.body
+    // const {email, password} = req.body
 
-    const admin = await Admin.find({email});
-    if (admin.length < 1) {
-        return res.status(409).json({
-          message: "Email does not exists!"
-        });
-      }else{
+    // const admin = await Admin.find({email});
+    // if (admin.length < 1) {
+    //     return res.status(409).json({
+    //       message: "Email does not exists!"
+    //     });
+    //   }else{
 
-    bcrypt.compare(password, admin[0].password, err => {
-        //if (err){
-        //  console.log(err)
-        //  return res.status(401).json({
-        //    message: 'Auth Failed'
-        //  });
-        //}
-        if (admin.length < 1) {
-            return res.status(409).json({
-              message: "Email does not exists!"
+    // bcrypt.compare(password, admin[0].password, err => {
+    //     //if (err){
+    //     //  console.log(err)
+    //     //  return res.status(401).json({
+    //     //    message: 'Auth Failed'
+    //     //  });
+    //     //}
+    //     if (admin.length < 1) {
+    //         return res.status(409).json({
+    //           message: "Email does not exists!"
+    //         });
+    //       }
+
+    //       console.log(admin)
+    //       res.status(200).json(admin);
+    //     })
+    // }
+    Admin.findOne({ email: req.body.email }).then(
+      (admin) => {
+        if (!admin) {
+          return res.status(401).json({
+            error: new Error('User not found!')
+          });
+        }
+        bcrypt.compare(req.body.password, admin.password).then(
+          (valid) => {
+            if (!valid) {
+              return res.status(401).json({
+                error: new Error('Incorrect password!')
+              });
+            }
+            res.status(200).json({
+              userId: admin._id,
+              token: 'token'
             });
           }
-
-          console.log(admin)
-          res.status(200).json(admin);
-        })
-    }
-
+        ).catch(
+          (error) => {
+            res.status(500).json({
+              error: error
+            });
+          }
+        );
+      }
+    ).catch(
+      (error) => {
+        res.status(500).json({
+          error: error
+        });
+      }
+    );
 })
 
 module.exports = router;
