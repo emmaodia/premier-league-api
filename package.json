@@ -27,7 +27,8 @@
     "mocha": "^7.0.1",
     "mongo": "^0.1.0",
     "mongodb": "^3.5.2",
-    "mongoose": "^5.8.11"
+    "mongoose": "^5.8.11",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

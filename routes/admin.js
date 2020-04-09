@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
+const Auth = require('../middleware/auth')
 
-router.get('/', async(req, res) => {
+router.get('/', Auth.isAuthorized, async(req, res) => {
     try {
          //res.status(200).json({msg: "This is JSON!"});
     const admin = await Admin.find()
@@ -24,11 +25,11 @@ router.get('/', async(req, res) => {
 router.get('/:admin', async(req, res) => {
 
   try {
-      const admin = await User.findById(req.params.fixtures);
+      const admin = await Admin.findById(req.params.admin);
 
       if(!admin) {
           return res.status(404).json({
-            message : "User not found!"
+            message : "Admin account not found!"
           })
         }
   
