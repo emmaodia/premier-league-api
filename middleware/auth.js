@@ -1,19 +1,18 @@
-const Admin = require('../models/admin')
+const jwt = require('jsonwebtoken');
 
-module.exports.isAuthorized  = function(req, res, next) {
-    const adminId = Admin.findById()
-    console.log(adminId);
-    // Admin.findById(req.session.adminId).exec(function (error, user) {
-    //     if (error) {
-    //         return next(error);
-    //     } else {      
-    //         if (admin === null) {     
-    //             var err = new Error('Not authorized! Go back!');
-    //             err.status = 400;
-    //             return next(err);
-    //         } else {
-    //             return next();
-    //         }
-    //     }
-    // });
-}
+module.exports = (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const adminId = decodedToken.adminId;
+    if (req.body.adminId && req.body.adminId !== adminId) {
+      throw 'Invalid user ID';
+    } else {
+      next();
+    }
+  } catch {
+    res.status(401).json({
+      error: new Error('Invalid request!')
+    });
+  }
+};

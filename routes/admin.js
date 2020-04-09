@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
-const Auth = require('../middleware/auth')
+const auth = require('../middleware/auth')
 const jwt = require('jsonwebtoken');
 
-router.get('/', Auth.isAuthorized, async(req, res) => {
+router.get('/', auth, async(req, res) => {
     try {
          //res.status(200).json({msg: "This is JSON!"});
     const admin = await Admin.find()
@@ -47,7 +47,7 @@ router.get('/:admin', async(req, res) => {
  
 })
 
-router.post('/signup', async(req, res) => {
+router.post('/signup', (req, res, next) => {
     // try {
     //     const {email, password} = req.body;
     //     const hash = bcrypt.hash(password, 10, (err, hash) => {
@@ -115,7 +115,7 @@ router.post('/signup', async(req, res) => {
     );
 })
 
-router.post('/login', async(req, res) => {
+router.post('/login', (req, res, next) => {
     // const {email, password} = req.body
 
     // const admin = await Admin.find({email});
@@ -156,9 +156,13 @@ router.post('/login', async(req, res) => {
                 error: new Error('Incorrect password!')
               });
             }
+            const token = jwt.sign(
+              { userId: admin._id },
+              'RANDOM_TOKEN_SECRET',
+              { expiresIn: '24h' });
             res.status(200).json({
               userId: admin._id,
-              token: 'token'
+              token: token
             });
           }
         ).catch(
