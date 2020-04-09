@@ -77,14 +77,14 @@ router.post('/signup', (req, res, next) => {
     // }
     bcrypt.hash(req.body.password, 10).then(
       (hash) => {
-        const user = new User({
+        const admin = new Admin({
           email: req.body.email,
           password: hash
         });
-        user.save().then(
+        admin.save().then(
           () => {
             res.status(201).json({
-              message: 'User added successfully!'
+              message: 'Admin account created successfully!'
             });
           }
         ).catch(
