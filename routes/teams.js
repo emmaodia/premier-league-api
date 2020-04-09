@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Team = require('../models/teams');
 const _ = require('lodash');
+const redis_client = require('../redis').redis_client;
+
+const checkTeamCache = require('../middleware/checkTeamCache');
 
 router.get('/search', async(req, res) => {
     try {
@@ -25,25 +28,29 @@ router.get('/search', async(req, res) => {
     }
 })
 
-router.get('/:team', async(req, res) => {
+router.get('/:team', checkTeamCache, async(req, res) => {
 
     try {
-        const team = await Team.findById(req.params.team);
+        const id  = req.params.team;
+        console.log(id);
+        const team = await Team.findById(id);
 
         if(!team) {
             return res.status(404).json({
               message : "Team not found!"
             })
           }
-    
+          console.log(team);
+          
+          redis_client.setex(id, 3600, JSON.stringify(team));
         res.status(200).json({
                                 name: team.name,
                                 city: team.city,
                                 coach: team.coach,
         
                             })
-    
-        return console.log(team);
+        
+        
     } catch (error) {
         console.log(error)
         res.status(500).json(error);
@@ -64,6 +71,7 @@ router.get('/', async(req, res) => {
             coach: team.coach
         }
     })
+
     res.status(200).json(response);
     console.log(response)
     } catch (error) {
@@ -122,5 +130,13 @@ router.delete('/:team', async(req, res) => {
     }
     
 })
+
+// redis_client.on('connect', function() {
+//     console.log('Redis client connected');
+// });
+
+// redis_client.on('error', function (err) {
+//     console.log('Something went wrong ' + err);
+// });
 
 module.exports = router;
