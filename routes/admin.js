@@ -48,34 +48,71 @@ router.get('/:admin', async(req, res) => {
 })
 
 router.post('/signup', async(req, res) => {
-    try {
-        const {email, password} = req.body;
-        const hash = bcrypt.hash(password, 10, (err, hash) => {
-            if (err) {
-                return res.status(500).json({
-                  error: err
-                });
-            }
-        })
+    // try {
+    //     const {email, password} = req.body;
+    //     const hash = bcrypt.hash(password, 10, (err, hash) => {
+    //         if (err) {
+    //             return res.status(500).json({
+    //               error: err
+    //             });
+    //         }
+    //     })
     
-        const admin = await Admin.find({email});
+    //     const admin = await Admin.find({email});
         
-        if (admin.length >= 1) {
-            return res.status(409).json({
-              message: "Email already exists!"
-            });
-          } else {
-           const result = new Admin({email, password: hash});
-           await result.save();
+    //     if (admin.length >= 1) {
+    //         return res.status(409).json({
+    //           message: "Email already exists!"
+    //         });
+    //       } else {
+    //        const result = new Admin({email, password: hash});
+    //        await result.save();
 
-           console.log(result);
-            res.status(200).json(result)
-          }
+    //        console.log(result);
+    //         res.status(200).json(result)
+    //       }
        
-    } catch (error) {
-        console.log(error)
-    }
-   
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    Admin.findOne({ email: req.body.email }).then(
+      (admin) => {
+        if (!admin) {
+          return res.status(401).json({
+            error: new Error('User not found!')
+          });
+        }
+        bcrypt.compare(req.body.password, admin.password).then(
+          (valid) => {
+            if (!valid) {
+              return res.status(401).json({
+                error: new Error('Incorrect password!')
+              });
+            }
+            const token = jwt.sign(
+              { userId: admin._id },
+              'RANDOM_TOKEN_SECRET',
+              { expiresIn: '24h' });
+            res.status(200).json({
+              userId: admin._id,
+              token: token
+            });
+          }
+        ).catch(
+          (error) => {
+            res.status(500).json({
+              error: error
+            });
+          }
+        );
+      }
+    ).catch(
+      (error) => {
+        res.status(500).json({
+          error: error
+        });
+      }
+    );
 })
 
 router.post('/login', async(req, res) => {
