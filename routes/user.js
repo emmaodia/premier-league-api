@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const userAuth = require('../middleware/userAuth')
 const jwt = require('jsonwebtoken');
 
 router.get('/', async(req, res) => {
@@ -22,10 +23,10 @@ router.get('/', async(req, res) => {
    
 })
 
-router.get('/:user', async(req, res) => {
+router.get('/:user', userAuth, async(req, res) => {
 
   try {
-      const user = await User.findById(req.params.fixtures);
+      const user = await User.findById(req.params.user);
 
       if(!user) {
           return res.status(404).json({
@@ -101,13 +102,13 @@ router.post('/login', async(req, res) => {
           }
         
           const token = jwt.sign(
-            { userId: admin._id },
+            { userId: user._id },
             'RANDOM_TOKEN_SECRET',
             { expiresIn: '24h' });  
 
         console.log(user)
         res.status(200).json({
-          userId: admin._id,
+          userId: user._id,
           token: token
         });
       })
