@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
+const redis_client = require('../redis').redis_client;
 
 router.get('/search', async(req, res) => {
 //{ res.json({msg: "o"})
