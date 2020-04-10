@@ -57,6 +57,11 @@ router.get('/:fixtures', async(req, res) => {
                                 away: fixtures.away,
                                 score: fixtures.score,
                                 play: fixtures.play,
+                                slug: fixtures.slug,
+                                request: {
+                                    type: "GET",
+                                    slugUrl: `http://localhost:5000/api/v1/fixtures/${fixtures._id}/${fixtures.slug}`,
+                                }
                             })
     
         return console.log(fixtures);
@@ -82,8 +87,8 @@ router.get('/', async(req, res) => {
             slug: fixtures.slug,
             request: {
                 type: "GET",
-                url: `http://localhost:3000/api/v1/fixtures/${fixtures._id}`,
-                slugUrl: `http://localhost:3000/api/v1/fixtures/${fixtures._id}/${fixtures.slug}`,
+                url: `http://localhost:5000/api/v1/fixtures/${fixtures._id}`,
+                slugUrl: `http://localhost:5000/api/v1/fixtures/${fixtures._id}/${fixtures.slug}`,
               }
         }
     })
