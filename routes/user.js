@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.get('/', async(req, res) => {
     try {
@@ -98,10 +99,18 @@ router.post('/login', async(req, res) => {
               message: "Email does not exists!"
             });
           }
+        
+          const token = jwt.sign(
+            { userId: admin._id },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h' });  
 
-          console.log(user)
-          res.status(200).json(user);
-        })
+        console.log(user)
+        res.status(200).json({
+          userId: admin._id,
+          token: token
+        });
+      })
     }
 
 })
