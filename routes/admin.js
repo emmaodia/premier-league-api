@@ -47,55 +47,34 @@ router.get('/:admin', auth, async(req, res) => {
  
 })
 
-router.post('/signup', (req, res, next) => {
-    // try {
-    //     const {email, password} = req.body;
-    //     const hash = bcrypt.hash(password, 10, (err, hash) => {
-    //         if (err) {
-    //             return res.status(500).json({
-    //               error: err
-    //             });
-    //         }
-    //     })
+router.post('/signup', async(req, res) => {
+    try {
+        const {email, password} = req.body;
+        const hash = bcrypt.hash(password, 10, (err, hash) => {
+            if (err) {
+                return res.status(500).json({
+                  error: err
+                });
+            }
+        })
     
-    //     const admin = await Admin.find({email});
+        const admin = await Admin.find({email});
         
-    //     if (admin.length >= 1) {
-    //         return res.status(409).json({
-    //           message: "Email already exists!"
-    //         });
-    //       } else {
-    //        const result = new Admin({email, password: hash});
-    //        await result.save();
+        if (admin.length >= 1) {
+            return res.status(409).json({
+              message: "Email already exists!"
+            });
+          } else {
+           const result = new Admin({email, password: hash});
+           await result.save();
 
-    //        console.log(result);
-    //         res.status(200).json(result)
-    //       }
+           console.log(result);
+            res.status(200).json(result)
+          }
        
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    bcrypt.hash(req.body.password, 10).then(
-      (hash) => {
-        const admin = new Admin({
-          email: req.body.email,
-          password: hash
-        });
-        admin.save().then(
-          () => {
-            res.status(201).json({
-              message: 'Admin account created successfully!'
-            });
-          }
-        ).catch(
-          (error) => {
-            res.status(500).json({
-              error: error
-            });
-          }
-        );
-      }
-    );
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 router.post('/login', (req, res, next) => {
