@@ -10,3 +10,6 @@ redis_client.on('connect', function() {
 redis_client.on('error', function (err) {
     console.log('Something went wrong ' + err);
 });
+
+exports.redis_client = redis.createClient(port_redis);
+ 
