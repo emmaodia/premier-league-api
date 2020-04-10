@@ -3,6 +3,8 @@ const router = express.Router();
 const Fixture = require('../models/fixtures');
 const redis_client = require('../redis').redis_client;
 
+const checkFixturesCache = require('../middleware/checkFixturesCache');
+
 router.get('/search', async(req, res) => {
 //{ res.json({msg: "o"})
     try {
@@ -42,7 +44,7 @@ router.get('/:fixtures/:slug', async(req, res) => {
         return console.log(fixtures);
 })
 
-router.get('/:fixtures', async(req, res) => {
+router.get('/:fixtures', checkFixturesCache, async(req, res) => {
 
     try {
         const id  = req.params.fixtures;
