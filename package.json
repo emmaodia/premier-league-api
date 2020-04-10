@@ -18,12 +18,17 @@
   "author": "Emmanuel Oaikhenan",
   "license": "Apache-2.0",
   "dependencies": {
+    "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongo": "^0.1.0",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7",
     "redis": "^3.0.2",
+    "mongoose-unique-validator": "^2.0.3",
     "supertest": "^4.0.2"
   },
   "devDependencies": {

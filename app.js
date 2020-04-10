@@ -12,6 +12,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => res.json({msg: "Welcome, Nerd!"}))
 
+const adminRouter = require('./routes/admin');
+
+app.use('/api/v1/admin', adminRouter)
+
 
 //configure redis client on port 6379
 const redis_client = redis.createClient(port_redis);
