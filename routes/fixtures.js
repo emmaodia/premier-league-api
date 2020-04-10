@@ -45,14 +45,19 @@ router.get('/:fixtures/:slug', async(req, res) => {
 router.get('/:fixtures', async(req, res) => {
 
     try {
-        const fixtures = await Fixture.findById(req.params.fixtures);
+        const id  = req.params.fixtures;
+        console.log(id);
+        const fixtures = await Fixture.findById(id);
 
         if(!fixtures) {
             return res.status(404).json({
               message : "Fixture not found!"
             })
-          }
-    
+        }
+        console.log(fixtures);
+        
+        redis_client.setex(id, 3600, JSON.stringify(fixtures));  
+        
         res.status(200).json({
                                 home: fixtures.home,
                                 away: fixtures.away,
