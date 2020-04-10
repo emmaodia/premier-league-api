@@ -9,16 +9,6 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "jest": {
-    "verbose": true,
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "setupFilesAfterEnv": [
-      "./setup.js"
-    ]
-  },
   "keywords": [
     "ExpressJS",
     "NodeJS",
@@ -37,7 +27,8 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.5.2",
     "mongoose": "^5.8.11",
-    "mongoose-unique-validator": "^2.0.3"
+    "mongoose-unique-validator": "^2.0.3",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2",
