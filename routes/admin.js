@@ -23,7 +23,7 @@ router.get('/', auth, async(req, res) => {
    
 })
 
-router.get('/:admin', async(req, res) => {
+router.get('/:admin', auth, async(req, res) => {
 
   try {
       const admin = await Admin.findById(req.params.admin);
