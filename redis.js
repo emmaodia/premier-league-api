@@ -12,4 +12,3 @@ redis_client.on('error', function (err) {
 });
 
 exports.redis_client = redis.createClient(port_redis);
- 
