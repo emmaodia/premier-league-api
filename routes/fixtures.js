@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
 const redis_client = require('../redis').redis_client;
-
+const auth = require('../middleware/auth')
 const checkFixturesCache = require('../middleware/checkFixturesCache');
 
 router.get('/search', async(req, res) => {
@@ -112,7 +112,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.post('/create', async(req, res) => {
+router.post('/create', auth, async(req, res) => {
 
     try {
         const { home, away, score, play } = req.body;
@@ -129,7 +129,7 @@ router.post('/create', async(req, res) => {
     
 });
 
-router.patch('/:fixtures', async(req, res) => {
+router.patch('/:fixtures', auth, async(req, res) => {
 
     try {
         const fixtures = await Fixture.findOneAndUpdate({ _id: req.params.fixtures }, req.body);
@@ -149,7 +149,7 @@ router.patch('/:fixtures', async(req, res) => {
     
 })
 
-router.delete('/:fixtures', async(req, res) => {
+router.delete('/:fixtures', auth, async(req, res) => {
     try {
         const id = req.params.fixtures;
 
