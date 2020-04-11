@@ -1,6 +1,9 @@
 const express = require('express');
 const dbConfig = express.Router();
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const url = 'mongodb://localhost:27017/premier-league-api';
 
 mongoose.Promise = global.Promise;
