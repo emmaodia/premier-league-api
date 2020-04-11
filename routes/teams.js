@@ -3,7 +3,7 @@ const router = express.Router();
 const Team = require('../models/teams');
 const _ = require('lodash');
 const redis_client = require('../redis').redis_client;
-
+const auth = require('../middleware/auth')
 const checkTeamCache = require('../middleware/checkTeamCache');
 
 router.get('/search', async(req, res) => {
@@ -28,7 +28,7 @@ router.get('/search', async(req, res) => {
     }
 })
 
-router.get('/:team', checkTeamCache, async(req, res) => {
+router.get('/:team', auth, checkTeamCache, async(req, res) => {
 
     try {
         const id  = req.params.team;
@@ -80,7 +80,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.post('/create', async(req, res) => {
+router.post('/create', auth, async(req, res) => {
 
     try {
         const { name, city, coach } = req.body;
@@ -97,7 +97,7 @@ router.post('/create', async(req, res) => {
     
 });
 
-router.patch('/:team', async(req, res) => {
+router.patch('/:team', auth, async(req, res) => {
 
     try {
         const team = await Team.findOneAndUpdate({ _id: req.params.team }, req.body);
@@ -117,7 +117,7 @@ router.patch('/:team', async(req, res) => {
     
 })
 
-router.delete('/:team', async(req, res) => {
+router.delete('/:team', auth, async(req, res) => {
     try {
         const id = req.params.team;
 
@@ -130,13 +130,5 @@ router.delete('/:team', async(req, res) => {
     }
     
 })
-
-// redis_client.on('connect', function() {
-//     console.log('Redis client connected');
-// });
-
-// redis_client.on('error', function (err) {
-//     console.log('Something went wrong ' + err);
-// });
 
 module.exports = router;
