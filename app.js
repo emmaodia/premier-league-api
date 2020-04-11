@@ -6,14 +6,16 @@ const dbConfig = require('./dbConfig');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.json({msg: "Welcome, Nerd!"}))
+app.get('/', (req, res) => res.json({msg: "Welcome, Nerd!"}));
 
 const adminRouter = require('./routes/admin');
+const userRouter = require('./routes/user');
 const teamsRouter = require("./routes/teams");
 const fixturesRouter = require("./routes/fixtures");
 
-app.use('/api/v1/admin', adminRouter)
+app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/teams', teamsRouter);
 app.use('/api/v1/fixtures', fixturesRouter);
+app.use('/api/v1/user', userRouter);
 
 module.exports = app;
