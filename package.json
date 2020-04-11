@@ -9,6 +9,16 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "setupFilesAfterEnv": [
+      "./setup.js"
+    ]
+  },
   "keywords": [
     "ExpressJS",
     "NodeJS",
