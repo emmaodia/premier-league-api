@@ -4,6 +4,8 @@ const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth')
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 router.get('/', auth, async(req, res) => {
     try {
@@ -94,7 +96,7 @@ router.post('/login', (req, res, next) => {
             }
             const token = jwt.sign(
               { userId: admin._id },
-              'RANDOM_TOKEN_SECRET',
+              process.env.JWT_SECRET,
               { expiresIn: '24h' });
             res.status(200).json({
               userId: admin._id,
