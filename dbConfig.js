@@ -4,11 +4,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const url = 'mongodb://localhost:27017/premier-league-api';
-
 mongoose.Promise = global.Promise;
 
-mongoose.connect(url, {
+mongoose.connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     useCreateIndex: true,
