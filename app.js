@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-//const dbConfig = require('./dbConfig');
+const dbConfig = require('./dbConfig');
 const dotenv = require('dotenv');
 dotenv.config();
 
