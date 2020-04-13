@@ -1,0 +1,9 @@
+version: "3.3"
+
+services:
+  webapp:
+    container_name: premier-league-api
+    restart: always
+    build: .
+    ports:
+      - "8080:3000"
