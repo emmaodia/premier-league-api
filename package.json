@@ -26,5 +26,14 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmaodia/premier-league-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/emmaodia/premier-league-api/issues"
+  },
+  "homepage": "https://emmaodia-premierleague-api.herokuapp.com/",
+  "documentation": "https://restless-shuttle-7879.postman.co/collections/4783155-23319bd6-d24f-431f-abbf-11e3ce29f7da?version=latest&workspace=af04dda2-af29-4f84-8933-a3e2f3064392#2c98150c-f052-471b-b378-3c26bdeb099f"
 }
