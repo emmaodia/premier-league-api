@@ -79,45 +79,30 @@ router.post('/signup', async(req, res) => {
     }
 })
 
-router.post('/login', (req, res, next) => {
-    Admin.findOne({ email: req.body.email }).then(
-      (admin) => {
-        if (!admin) {
-          return res.status(401).json({
-            error: new Error('User not found!')
-          });
-        }
-        bcrypt.compare(req.body.password, admin.password).then(
-          (valid) => {
-            if (!valid) {
-              return res.status(401).json({
-                error: new Error('Incorrect password!')
-              });
-            }
-            const token = jwt.sign(
-              { userId: admin._id },
-              process.env.JWT_SECRET,
-              { expiresIn: '24h' });
-            res.status(200).json({
-              userId: admin._id,
-              token: token
-            });
-          }
-        ).catch(
-          (error) => {
-            res.status(500).json({
-              error: error
-            });
-          }
-        );
-      }
-    ).catch(
-      (error) => {
-        res.status(500).json({
-          error: error
+router.post('/login', async(req, res) => {
+    const {email, password} = req.body
+
+    const admin = await Admin.find({email});
+    if (admin.length < 1) {
+        return res.status(409).json({
+          message: "Email does not exists!"
         });
-      }
-    );
+      }else{
+
+    bcrypt.compare(password, admin[0].password, err => {
+  
+        const token = jwt.sign(
+            { userId: admin._id },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h' });  
+
+        console.log(admin)
+        res.status(200).json({
+          userId: admin._id,
+          token: token
+        });
+      })
+    }
 })
 
 module.exports = router;
