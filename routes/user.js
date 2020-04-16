@@ -89,17 +89,6 @@ router.post('/login', async(req, res) => {
       }else{
 
     bcrypt.compare(password, user[0].password, err => {
-        //if (err){
-        //  console.log(err)
-        //  return res.status(401).json({
-        //    message: 'Auth Failed'
-        //  });
-        //}
-        if (user.length < 1) {
-            return res.status(409).json({
-              message: "Email does not exists!"
-            });
-          }
         
           const token = jwt.sign(
             { userId: user._id },
