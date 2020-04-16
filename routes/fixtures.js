@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
-const redis_client = require('../redis').redis_client;
+// const redis_client = require('../redis').redis_client;
 const auth = require('../middleware/auth')
 const checkFixturesCache = require('../middleware/checkFixturesCache');
 
@@ -36,7 +36,7 @@ router.get('/:fixtures/:slug', async(req, res) => {
             })
           }
         
-        redis_client.setex(id, 3600, JSON.stringify(fixtures));
+        // redis_client.setex(id, 3600, JSON.stringify(fixtures));
         res.status(200).json({
                                 home: fixtures.home,
                                 away: fixtures.away,
@@ -61,7 +61,7 @@ router.get('/:fixtures', checkFixturesCache, async(req, res) => {
         }
         console.log(fixtures);
         
-        redis_client.setex(id, 3600, JSON.stringify(fixtures));  
+        // redis_client.setex(id, 3600, JSON.stringify(fixtures));  
         
         res.status(200).json({
                                 home: fixtures.home,
