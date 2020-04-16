@@ -1,5 +1,5 @@
 const redis = require('redis');
-const port_redis = process.env.REDIS_URL || 6379;
+const port_redis = process.env.REDIS_URL;
 
 const redis_client = redis.createClient(port_redis);
 
