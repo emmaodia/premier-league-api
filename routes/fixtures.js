@@ -3,7 +3,7 @@ const router = express.Router();
 const Fixture = require('../models/fixtures');
 
 const auth = require('../middleware/auth')
-const checkFixturesCache = require('../middleware/checkFixturesCache');
+
 
 router.get('/search', async(req, res) => {
 

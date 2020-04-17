@@ -4,7 +4,7 @@ const Team = require('../models/teams');
 const _ = require('lodash');
 
 const auth = require('../middleware/auth')
-const checkTeamCache = require('../middleware/checkTeamCache');
+
 
 router.get('/search', async(req, res) => {
     try {
