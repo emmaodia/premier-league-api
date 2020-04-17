@@ -28,7 +28,7 @@ router.get('/search', async(req, res) => {
     }
 })
 
-router.get('/:team', auth, checkTeamCache, async(req, res) => {
+router.get('/:team', auth, async(req, res) => {
 
     try {
         const id  = req.params.team;

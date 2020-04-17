@@ -47,7 +47,7 @@ router.get('/:fixtures/:slug', async(req, res) => {
         return console.log(fixtures);
 })
 
-router.get('/:fixtures', checkFixturesCache, async(req, res) => {
+router.get('/:fixtures', async(req, res) => {
 
     try {
         const id  = req.params.fixtures;
