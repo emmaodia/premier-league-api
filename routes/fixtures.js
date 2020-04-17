@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Fixture = require('../models/fixtures');
-// const redis_client = require('../redis').redis_client;
+
 const auth = require('../middleware/auth')
 const checkFixturesCache = require('../middleware/checkFixturesCache');
 
 router.get('/search', async(req, res) => {
-//{ res.json({msg: "o"})
+
     try {
         const { play: qPlay } = req.query;
         const fixtures = await Fixture.find()
@@ -36,7 +36,7 @@ router.get('/:fixtures/:slug', async(req, res) => {
             })
           }
         
-        // redis_client.setex(id, 3600, JSON.stringify(fixtures));
+        
         res.status(200).json({
                                 home: fixtures.home,
                                 away: fixtures.away,
@@ -61,7 +61,7 @@ router.get('/:fixtures', checkFixturesCache, async(req, res) => {
         }
         console.log(fixtures);
         
-        // redis_client.setex(id, 3600, JSON.stringify(fixtures));  
+        
         
         res.status(200).json({
                                 home: fixtures.home,

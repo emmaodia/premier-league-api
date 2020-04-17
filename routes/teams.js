@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Team = require('../models/teams');
 const _ = require('lodash');
-// const redis_client = require('../redis').redis_client;
+
 const auth = require('../middleware/auth')
 const checkTeamCache = require('../middleware/checkTeamCache');
 
@@ -42,7 +42,7 @@ router.get('/:team', auth, checkTeamCache, async(req, res) => {
           }
           console.log(team);
           
-        //   redis_client.setex(id, 3600, JSON.stringify(team));
+       
         res.status(200).json({
                                 name: team.name,
                                 city: team.city,
