@@ -8,7 +8,13 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.json({msg: "Welcome, Nerd!"}));
+app.get('/', (req, res) => res.json({
+                         msg: "Welcome, Nerd!",
+                         about: "A Mock League API that serves Football Fixtures Score.  that serves the latest scores of fixtures of matches in a Mock Premier League",
+                         documentation: "Kindly view documentation below",
+                         url: `https://documenter.getpostman.com/view/4783155/Szf54VPL?version=latest`,
+                         stack: "NodeJS - JavaScript, MongoDB, Jest, Redis, Docker"
+                        }));
 
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
